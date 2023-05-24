@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use systems::setup;
+use systems::*;
 
 pub mod components;
 pub mod systems;
@@ -16,6 +16,7 @@ impl Plugin for SetupPlugin {
             }),
             ..default()
         }))
-        .add_startup_system(setup);
+        .add_startup_system(setup_camera)
+        .add_startup_system(setup_stall);
     }
 }
