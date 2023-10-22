@@ -12,12 +12,15 @@ pub fn setup(mut commands: Commands, server: Res<AssetServer>) {
 
     let texture = server.load("sprites/background.png");
 
-    commands.spawn(SpriteBundle {
-        sprite: Sprite {
-            custom_size: Some(Vec2::new(640., 480.)),
+    commands.spawn((
+        SpriteBundle {
+            sprite: Sprite {
+                custom_size: Some(Vec2::new(640., 480.)),
+                ..default()
+            },
+            texture,
             ..default()
         },
-        texture,
-        ..default()
-    });
+        Name::new("Background"),
+    ));
 }
