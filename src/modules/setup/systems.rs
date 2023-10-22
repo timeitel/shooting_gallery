@@ -1,16 +1,23 @@
 use super::components::MainCamera;
 use bevy::prelude::*;
 
-const TOTAL_AMMO: usize = 3;
-const TOTAL_TIME: usize = 90;
+#[derive(Component, Debug)]
+pub struct Background;
 
-pub fn setup_camera(mut commands: Commands) {
+// const TOTAL_AMMO: usize = 3;
+// const TOTAL_TIME: usize = 90;
+
+pub fn setup(mut commands: Commands, server: Res<AssetServer>) {
     commands.spawn((Camera2dBundle::default(), MainCamera));
-}
 
-pub fn setup_stall(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let texture = server.load("sprites/background.png");
+
     commands.spawn(SpriteBundle {
-        texture: asset_server.load("sprites/bg_wood.png"),
+        sprite: Sprite {
+            custom_size: Some(Vec2::new(640., 480.)),
+            ..default()
+        },
+        texture,
         ..default()
     });
 }
