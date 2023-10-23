@@ -10,17 +10,44 @@ pub struct Background;
 pub fn setup(mut commands: Commands, server: Res<AssetServer>) {
     commands.spawn((Camera2dBundle::default(), MainCamera));
 
-    let texture = server.load("sprites/background.png");
+    commands.spawn(bg_bundle(&server));
+    commands.spawn(wood_bundle(&server, (-512., 231.)));
+    commands.spawn(wood_bundle(&server, (-250., 231.)));
+    commands.spawn(wood_bundle(&server, (100., 231.)));
+}
 
-    commands.spawn((
+fn wood_bundle(server: &Res<AssetServer>, coords: (f32, f32)) -> (SpriteBundle, Name) {
+    let wood = server.load("sprites/wood.png");
+
+    (
         SpriteBundle {
-            sprite: Sprite {
-                custom_size: Some(Vec2::new(640., 480.)),
+            texture: wood,
+            transform: Transform {
+                translation: Vec3::new(coords.0, coords.1, 0.),
                 ..default()
             },
-            texture,
+            ..default()
+        },
+        Name::new("Wood"),
+    )
+}
+
+fn bg_bundle(server: &Res<AssetServer>) -> (SpriteBundle, Name) {
+    let background = server.load("sprites/background.png");
+
+    (
+        SpriteBundle {
+            sprite: Sprite {
+                custom_size: Some(Vec2::new(1280., 720.)),
+                ..default()
+            },
+            texture: background,
+            transform: Transform {
+                translation: Vec3::new(0., 0., -1.),
+                ..default()
+            },
             ..default()
         },
         Name::new("Background"),
-    ));
+    )
 }
