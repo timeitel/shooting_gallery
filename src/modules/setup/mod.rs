@@ -11,7 +11,7 @@ impl Plugin for SetupPlugin {
         app.add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "It's a shooting gallery!!".into(),
-                resolution: (1280., 720.).into(),
+                resolution: (1250., 720.).into(),
                 resizable: true,
                 position: WindowPosition::At(IVec2::new(100, 1000)), // TODO: remove
                 ..default()
