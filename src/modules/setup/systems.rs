@@ -26,8 +26,22 @@ pub fn setup(mut commands: Commands, server: Res<AssetServer>) {
 
     commands.spawn(top_curtain(&server, (-447., 283.), None));
     commands.spawn(top_curtain(&server, (-281., 272.), None));
-    commands.spawn(top_curtain(&server, (-107., 268.), None));
-    commands.spawn(top_curtain(&server, (-100., 270.), None));
+    commands.spawn(top_curtain(
+        &server,
+        (-107., 268.),
+        Some(Vec3::new(1.2, 1.3, 1.)),
+    ));
+    commands.spawn(top_curtain(
+        &server,
+        (100., 270.),
+        Some(Vec3::new(1.2, 1.3, 1.)),
+    ));
+    commands.spawn(top_curtain(
+        &server,
+        (300., 270.),
+        Some(Vec3::new(1.2, 1.2, 1.)),
+    ));
+    commands.spawn(top_curtain(&server, (500., 270.), None));
 
     commands.spawn(side_curtain(&server, (-560., 86.), Quat::default()));
     commands.spawn(side_curtain(
@@ -126,11 +140,7 @@ fn top_curtain(
             texture: image,
             transform: Transform {
                 translation: Vec3::new(coords.0, coords.1, 5.),
-                scale: scale.unwrap_or(Vec3 {
-                    x: 1.,
-                    y: 1.,
-                    z: 1.,
-                }),
+                scale: scale.unwrap_or(Vec3::new(1., 1., 1.)),
                 ..default()
             },
             ..default()
