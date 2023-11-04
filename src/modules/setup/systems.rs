@@ -24,33 +24,8 @@ pub fn setup(mut commands: Commands, server: Res<AssetServer>) {
     commands.spawn(straight_curtain(&server, (256., 319.)));
     commands.spawn(straight_curtain(&server, (512., 319.)));
 
-    commands.spawn(top_curtain(&server, (-447., 283.), None));
-    commands.spawn(top_curtain(&server, (-281., 272.), None));
-    commands.spawn(top_curtain(
-        &server,
-        (-107., 268.),
-        Some(Vec3::new(1.2, 1.3, 1.)),
-    ));
-    commands.spawn(top_curtain(
-        &server,
-        (100., 270.),
-        Some(Vec3::new(1.2, 1.3, 1.)),
-    ));
-    commands.spawn(top_curtain(
-        &server,
-        (300., 270.),
-        Some(Vec3::new(1.2, 1.2, 1.)),
-    ));
-    commands.spawn(top_curtain(&server, (500., 270.), None));
-
+    commands.spawn_batch(get_top_curtains(&server));
     commands.spawn_batch(get_side_curtains(&server));
-    commands.spawn(side_curtain(
-        &server,
-        (561., 86.),
-        Quat::from_rotation_y(3.),
-    ));
-
-    commands.spawn(side_curtain(&server, (-560., 86.), Quat::default()));
 }
 
 fn wood(server: &Res<AssetServer>, coords: (f32, f32)) -> (SpriteBundle, Name) {
@@ -131,12 +106,12 @@ fn side_curtain(
 }
 
 fn get_side_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
-    let image = server.load("sprites/curtain.png");
+    let curtain = server.load("sprites/curtain.png");
     let rope = server.load("sprites/curtain_rope.png");
 
     let left_curtain = (
         SpriteBundle {
-            texture: image.clone(),
+            texture: curtain.clone(),
             transform: Transform {
                 translation: Vec3::new(-560., 86., 5.),
                 scale: Vec3 {
@@ -165,19 +140,20 @@ fn get_side_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
 
     let right_curtain = (
         SpriteBundle {
-            texture: image,
+            texture: curtain,
             transform: Transform {
-                translation: Vec3::new(-560., 86., 5.),
+                translation: Vec3::new(561., 86., 5.),
                 scale: Vec3 {
                     x: 1.1,
                     y: 1.1,
                     z: 1.,
                 },
+                rotation: Quat::from_rotation_y(3.),
                 ..default()
             },
             ..default()
         },
-        Name::new("Left curtain"),
+        Name::new("Right curtain"),
     );
 
     let right_rope = (
@@ -189,10 +165,91 @@ fn get_side_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
             },
             ..default()
         },
-        Name::new("Left curtain rope"),
+        Name::new("Right curtain rope"),
     );
 
     vec![left_rope, left_curtain, right_rope, right_curtain]
+}
+
+fn get_top_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
+    let curtain = server.load("sprites/curtain_top.png");
+    let mut top_curtains = vec![];
+    top_curtains.push((
+        SpriteBundle {
+            texture: curtain.clone(),
+            transform: Transform {
+                translation: Vec3::new(-447., 283., 5.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Top"),
+    ));
+
+    top_curtains.push((
+        SpriteBundle {
+            texture: curtain.clone(),
+            transform: Transform {
+                translation: Vec3::new(-281., 272., 5.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Top"),
+    ));
+
+    top_curtains.push((
+        SpriteBundle {
+            texture: curtain.clone(),
+            transform: Transform {
+                translation: Vec3::new(-107., 268., 5.),
+                scale: Vec3::new(1.2, 1.3, 1.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Top"),
+    ));
+
+    top_curtains.push((
+        SpriteBundle {
+            texture: curtain.clone(),
+            transform: Transform {
+                translation: Vec3::new(100., 270., 5.),
+                scale: Vec3::new(1.2, 1.3, 1.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Top"),
+    ));
+
+    top_curtains.push((
+        SpriteBundle {
+            texture: curtain.clone(),
+            transform: Transform {
+                translation: Vec3::new(300., 270., 5.),
+                scale: Vec3::new(1.2, 1.2, 1.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Top"),
+    ));
+
+    top_curtains.push((
+        SpriteBundle {
+            texture: curtain.clone(),
+            transform: Transform {
+                translation: Vec3::new(500., 270., 5.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Top"),
+    ));
+
+    top_curtains
 }
 
 fn top_curtain(
