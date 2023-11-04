@@ -43,12 +43,14 @@ pub fn setup(mut commands: Commands, server: Res<AssetServer>) {
     ));
     commands.spawn(top_curtain(&server, (500., 270.), None));
 
-    commands.spawn(side_curtain(&server, (-560., 86.), Quat::default()));
+    commands.spawn_batch(get_side_curtains(&server));
     commands.spawn(side_curtain(
         &server,
         (561., 86.),
         Quat::from_rotation_y(3.),
     ));
+
+    commands.spawn(side_curtain(&server, (-560., 86.), Quat::default()));
 }
 
 fn wood(server: &Res<AssetServer>, coords: (f32, f32)) -> (SpriteBundle, Name) {
@@ -126,6 +128,71 @@ fn side_curtain(
         },
         Name::new("Curtain Side"),
     )
+}
+
+fn get_side_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
+    let image = server.load("sprites/curtain.png");
+    let rope = server.load("sprites/curtain_rope.png");
+
+    let left_curtain = (
+        SpriteBundle {
+            texture: image.clone(),
+            transform: Transform {
+                translation: Vec3::new(-560., 86., 5.),
+                scale: Vec3 {
+                    x: 1.1,
+                    y: 1.1,
+                    z: 1.,
+                },
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Left curtain"),
+    );
+
+    let left_rope = (
+        SpriteBundle {
+            texture: rope.clone(),
+            transform: Transform {
+                translation: Vec3::new(-616., 83., 10.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Left curtain rope"),
+    );
+
+    let right_curtain = (
+        SpriteBundle {
+            texture: image,
+            transform: Transform {
+                translation: Vec3::new(-560., 86., 5.),
+                scale: Vec3 {
+                    x: 1.1,
+                    y: 1.1,
+                    z: 1.,
+                },
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Left curtain"),
+    );
+
+    let right_rope = (
+        SpriteBundle {
+            texture: rope,
+            transform: Transform {
+                translation: Vec3::new(612., 83., 10.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Left curtain rope"),
+    );
+
+    vec![left_rope, left_curtain, right_rope, right_curtain]
 }
 
 fn top_curtain(
