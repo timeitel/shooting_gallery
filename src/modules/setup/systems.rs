@@ -10,41 +10,77 @@ pub struct Background;
 pub fn setup(mut commands: Commands, server: Res<AssetServer>) {
     commands.spawn((Camera2dBundle::default(), MainCamera));
 
-    commands.spawn(bg(&server));
-
-    commands.spawn(wood(&server, (-512., 231.)));
-    commands.spawn(wood(&server, (-260., 231.)));
-    commands.spawn(wood(&server, (-4., 231.)));
-    commands.spawn(wood(&server, (251., 231.)));
-    commands.spawn(wood(&server, (505., 231.)));
-
-    commands.spawn(straight_curtain(&server, (-512., 319.)));
-    commands.spawn(straight_curtain(&server, (-256., 319.)));
-    commands.spawn(straight_curtain(&server, (0., 319.)));
-    commands.spawn(straight_curtain(&server, (256., 319.)));
-    commands.spawn(straight_curtain(&server, (512., 319.)));
-
+    commands.spawn(get_bg(&server));
+    commands.spawn_batch(get_wood_boards(&server));
+    commands.spawn_batch(get_straight_curtains(&server));
     commands.spawn_batch(get_top_curtains(&server));
     commands.spawn_batch(get_side_curtains(&server));
 }
 
-fn wood(server: &Res<AssetServer>, coords: (f32, f32)) -> (SpriteBundle, Name) {
+fn get_wood_boards(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
     let wood = server.load("sprites/wood.png");
+    let mut boards = vec![];
 
-    (
+    boards.push((
         SpriteBundle {
-            texture: wood,
+            texture: wood.clone(),
             transform: Transform {
-                translation: Vec3::new(coords.0, coords.1, 0.),
+                translation: Vec3::new(-512., 231., 0.),
                 ..default()
             },
             ..default()
         },
         Name::new("Wood"),
-    )
+    ));
+    boards.push((
+        SpriteBundle {
+            texture: wood.clone(),
+            transform: Transform {
+                translation: Vec3::new(-260., 231., 0.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Wood"),
+    ));
+    boards.push((
+        SpriteBundle {
+            texture: wood.clone(),
+            transform: Transform {
+                translation: Vec3::new(-4., 231., 0.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Wood"),
+    ));
+    boards.push((
+        SpriteBundle {
+            texture: wood.clone(),
+            transform: Transform {
+                translation: Vec3::new(251., 231., 0.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Wood"),
+    ));
+    boards.push((
+        SpriteBundle {
+            texture: wood.clone(),
+            transform: Transform {
+                translation: Vec3::new(505., 231., 0.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Wood"),
+    ));
+
+    boards
 }
 
-fn bg(server: &Res<AssetServer>) -> (SpriteBundle, Name) {
+fn get_bg(server: &Res<AssetServer>) -> (SpriteBundle, Name) {
     let image = server.load("sprites/background.png");
 
     (
@@ -64,45 +100,70 @@ fn bg(server: &Res<AssetServer>) -> (SpriteBundle, Name) {
     )
 }
 
-fn straight_curtain(server: &Res<AssetServer>, coords: (f32, f32)) -> (SpriteBundle, Name) {
+fn get_straight_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
     let image = server.load("sprites/curtain_straight.png");
+    let mut bundles = vec![];
 
-    (
+    bundles.push((
         SpriteBundle {
-            texture: image,
+            texture: image.clone(),
             transform: Transform {
-                translation: Vec3::new(coords.0, coords.1, 10.),
+                translation: Vec3::new(-512., 319., 10.),
                 ..default()
             },
             ..default()
         },
         Name::new("Curtain Straight"),
-    )
-}
-
-fn side_curtain(
-    server: &Res<AssetServer>,
-    coords: (f32, f32),
-    rotation: Quat,
-) -> (SpriteBundle, Name) {
-    let image = server.load("sprites/curtain.png");
-
-    (
+    ));
+    bundles.push((
         SpriteBundle {
-            texture: image,
+            texture: image.clone(),
             transform: Transform {
-                translation: Vec3::new(coords.0, coords.1, 5.),
-                rotation,
-                scale: Vec3 {
-                    x: 1.1,
-                    y: 1.1,
-                    z: 1.,
-                },
+                translation: Vec3::new(-256., 319., 10.),
+                ..default()
             },
             ..default()
         },
-        Name::new("Curtain Side"),
-    )
+        Name::new("Curtain Straight"),
+    ));
+
+    bundles.push((
+        SpriteBundle {
+            texture: image.clone(),
+            transform: Transform {
+                translation: Vec3::new(0., 319., 10.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Straight"),
+    ));
+
+    bundles.push((
+        SpriteBundle {
+            texture: image.clone(),
+            transform: Transform {
+                translation: Vec3::new(256., 319., 10.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Straight"),
+    ));
+
+    bundles.push((
+        SpriteBundle {
+            texture: image,
+            transform: Transform {
+                translation: Vec3::new(512., 319., 10.),
+                ..default()
+            },
+            ..default()
+        },
+        Name::new("Curtain Straight"),
+    ));
+
+    bundles
 }
 
 fn get_side_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
@@ -250,25 +311,4 @@ fn get_top_curtains(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
     ));
 
     top_curtains
-}
-
-fn top_curtain(
-    server: &Res<AssetServer>,
-    coords: (f32, f32),
-    scale: Option<Vec3>,
-) -> (SpriteBundle, Name) {
-    let image = server.load("sprites/curtain_top.png");
-
-    (
-        SpriteBundle {
-            texture: image,
-            transform: Transform {
-                translation: Vec3::new(coords.0, coords.1, 5.),
-                scale: scale.unwrap_or(Vec3::new(1., 1., 1.)),
-                ..default()
-            },
-            ..default()
-        },
-        Name::new("Curtain Top"),
-    )
 }
