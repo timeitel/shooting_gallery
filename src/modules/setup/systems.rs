@@ -21,61 +21,25 @@ fn get_wood_boards(server: &Res<AssetServer>) -> Vec<(SpriteBundle, Name)> {
     let wood = server.load("sprites/wood.png");
     let mut boards = vec![];
 
-    boards.push((
-        SpriteBundle {
-            texture: wood.clone(),
-            transform: Transform {
-                translation: Vec3::new(-512., 231., 0.),
+    let new_bundle = |x: f32, y: f32, z: f32| -> (SpriteBundle, Name) {
+        (
+            SpriteBundle {
+                texture: wood.clone(),
+                transform: Transform {
+                    translation: Vec3::new(x, y, z),
+                    ..default()
+                },
                 ..default()
             },
-            ..default()
-        },
-        Name::new("Wood"),
-    ));
-    boards.push((
-        SpriteBundle {
-            texture: wood.clone(),
-            transform: Transform {
-                translation: Vec3::new(-260., 231., 0.),
-                ..default()
-            },
-            ..default()
-        },
-        Name::new("Wood"),
-    ));
-    boards.push((
-        SpriteBundle {
-            texture: wood.clone(),
-            transform: Transform {
-                translation: Vec3::new(-4., 231., 0.),
-                ..default()
-            },
-            ..default()
-        },
-        Name::new("Wood"),
-    ));
-    boards.push((
-        SpriteBundle {
-            texture: wood.clone(),
-            transform: Transform {
-                translation: Vec3::new(251., 231., 0.),
-                ..default()
-            },
-            ..default()
-        },
-        Name::new("Wood"),
-    ));
-    boards.push((
-        SpriteBundle {
-            texture: wood.clone(),
-            transform: Transform {
-                translation: Vec3::new(505., 231., 0.),
-                ..default()
-            },
-            ..default()
-        },
-        Name::new("Wood"),
-    ));
+            Name::new("Wood"),
+        )
+    };
+
+    boards.push(new_bundle(-512., 231., 0.));
+    boards.push(new_bundle(-260., 231., 0.));
+    boards.push(new_bundle(-4., 231., 0.));
+    boards.push(new_bundle(251., 231., 0.));
+    boards.push(new_bundle(505., 231., 0.));
 
     boards
 }
